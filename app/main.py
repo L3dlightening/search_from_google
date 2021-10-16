@@ -27,7 +27,10 @@ if __name__ == '__main__':
         output_path = make_output_file_path(INPUT_FILE_PATH, OUTPUT_FILE_PATH, file_path)
         df = pd.read_csv(file_path)
         for idx, row in df.iterrows():
-            # ToDo ここに値をゲットするコードを追記
             df.loc[idx, OUTPUT_TITLE], df.loc[idx, OUTPUT_DETAIL], df.loc[idx, OUTPUT_URL_LINK] = \
                 SearchFromGoogle(row[INPUT_SEARCH_WORD]).save_contents()
-            df.to_csv(output_path, index=False)
+
+        # df[[OUTPUT_TITLE, OUTPUT_DETAIL,OUTPUT_URL_LINK]] = \
+        #     df.apply(SearchFromGoogle().save_contents(), result_type='expand')
+
+        df.to_csv(output_path, index=False)
