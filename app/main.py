@@ -5,16 +5,19 @@ import pandas as pd
 from src.search import SearchFromGoogle
 from src.util import make_output_file_path
 
-
+# ファイルの入力先と出力先を変更する場合は以下の2つを変更
 INPUT_FILE_PATH = './files/input/'
 OUTPUT_FILE_PATH = './files/output/'
 
+# 現状はcsvのみのサポートだが、追加する場合は以下にリストで追記する
 SUPPORTED_EXTENTION = '*.csv'
 
+# 入力するデータのカラム名を変更したい場合は以下を編集
 INPUT_SEARCH_WORD = 'name'
-OUTPUT_TITLE = 'title'
-OUTPUT_DETAIL = 'detail'
-OUTPUT_URL_LINK = 'link'
+# 出力するデータのカラム名を変更したい場合は以下を編集
+OUTPUT_TITLE = 'title' # タイトル
+OUTPUT_DETAIL = 'detail' # ディスクリプション
+OUTPUT_URL_LINK = 'link' # リンク
 
 
 if __name__ == '__main__':
@@ -26,6 +29,5 @@ if __name__ == '__main__':
         for idx, row in df.iterrows():
             # ToDo ここに値をゲットするコードを追記
             df.loc[idx, OUTPUT_TITLE], df.loc[idx, OUTPUT_DETAIL], df.loc[idx, OUTPUT_URL_LINK] = \
-                idx, idx, idx
-            print(SearchFromGoogle(row[INPUT_SEARCH_WORD]).save_contents())
+                SearchFromGoogle(row[INPUT_SEARCH_WORD]).save_contents()
             df.to_csv(output_path, index=False)
