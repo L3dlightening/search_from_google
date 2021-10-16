@@ -38,6 +38,7 @@ if __name__ == '__main__':
             df.loc[idx, OUTPUT_TITLE], df.loc[idx, OUTPUT_DETAIL], df.loc[idx, OUTPUT_URL_LINK] = \
                 SearchFromGoogle(row[INPUT_SEARCH_WORD]).save_contents()
 
+        # ToDo 高速化を行う場合は、for文を削除しapplyで動くようにする
         # df[[OUTPUT_TITLE, OUTPUT_DETAIL,OUTPUT_URL_LINK]] = \
         #     df.apply(SearchFromGoogle().save_contents(), result_type='expand')
 
