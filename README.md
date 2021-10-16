@@ -16,10 +16,10 @@ https://www.python.org/downloads/release/python-397/
 1. 自分が現在使用しているchromeのバージョンを確認する
 ![alt text](./pic/chrome_ver.png)
 
-2. 自分のchromeのバージョンに合わせたchromeDriverをダウンロードし、 `search_from_google/src/driver` の中に保存する
+2. 自分のchromeのバージョンに合わせたchromeDriverをダウンロードし、 `search_from_google/app/src/driver` の中に保存する  
 https://chromedriver.chromium.org/downloads
 
-3. `.env.sample` を `.env` に名前を変更し、以下のように保存する
+3. `sample.env` を `.env` に名前を変更し、以下のように保存する
 #### macの場合
 ```
 CHROME_DRIVER_PATH=./app/src/driver/chromedriver
@@ -28,7 +28,7 @@ OS_TYPE=MAC
 
 #### windowsの場合
 ```
-CHROME_DRIVER_PATH=./app/src/dirver/chromedriver.exe
+CHROME_DRIVER_PATH=./app/src/driver/chromedriver.exe
 OS_TYPE=WIN
 ```
 
@@ -65,3 +65,5 @@ $ pip install -r requirements.txt
 2. windowsの場合は `@cd`  macの場合は `pwd` コマンドを実行し、カレントディレクトリが `search_from_google` であることを確認する
 3. `python app/main.py` をコマンドで実行する
 4. `seaech_from_google` 内の `files/output` 内にプログラムを実行した結果が配置される
+
+注意: `python app/main.py` がうまく動かない場合は、 `python3 app/main.py` を実行する

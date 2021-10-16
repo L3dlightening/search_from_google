@@ -41,4 +41,4 @@ if __name__ == '__main__':
         # df[[OUTPUT_TITLE, OUTPUT_DETAIL,OUTPUT_URL_LINK]] = \
         #     df.apply(SearchFromGoogle().save_contents(), result_type='expand')
 
-        df.to_csv(output_path, index=False)
+        df.to_csv(output_path, index=False, encoding="shift-jis")
