@@ -16,39 +16,43 @@ https://www.python.org/downloads/release/python-397/
 1. 自分が現在使用しているchromeのバージョンを確認する
 ![alt text](./pic/chrome_ver.png)
 
-2. 自分のchromeのバージョンに合わせたchromeDriverをダウンロードし、任意の場所へ保存する
+2. 自分のchromeのバージョンに合わせたchromeDriverをダウンロードし、 `search_from_google/src/driver` の中に保存する
 https://chromedriver.chromium.org/downloads
 
-3. `.env.sample` をもとにに保存したchromeDriverまでのパスを `CHROME_DRIVER_PATH=` に追加し、`.env` として保存する  
+3. `.env.sample` を `.env` に名前を変更し、以下のように保存する
 #### macの場合
 ```
-CHROME_DRIVER_PATH={chromedriverまでのパス}/chromedriver
+CHROME_DRIVER_PATH=./app/src/driver/chromedriver
+OS_TYPE=MAC
 ```
 
 #### windowsの場合
 ```
-CHROME_DRIVER_PATH={chromedriverまでのパス}/chromedriver.exe
+CHROME_DRIVER_PATH=./app/src/dirver/chromedriver.exe
+OS_TYPE=WIN
 ```
 
 ### python環境に必要なものをインストール
 #### macの場合
-以下のコマンドを入力し、seach_from_googleフォルダ内にいることを確認
+1. ターミナルを立ち上げる
+2. seach_from_googleフォルダ内にいることを確認
 ```
 $ pwd
 ```
 
-以下のコマンドを実行し、pythonに必要なパッケージをインストール
+3. pythonに必要なパッケージをインストール
 ```
 $ pip install -r requirements.txt
 ```
 
 #### windowsの場合
-以下のコマンドを実行し、seach_from_googleフォルダ内にいることを確認
+1. コマンドプロンプトを *管理者権限* で実行し、以下のコマンドを実行する
+2. seach_from_googleフォルダ内にいることを確認
 ```
 > @cd
 ```
 
-以下のコマンドを実行し、pythonに必要なパッケージをインストール
+3. pythonに必要なパッケージをインストール
 ```
 $ pip install -r requirements.txt
 ```

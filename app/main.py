@@ -4,10 +4,18 @@ import pandas as pd
 
 from src.search import SearchFromGoogle
 from src.util import make_output_file_path
+from dotenv import load_dotenv
+
+load_dotenv()
+OS_TYPE = os.getenv('OS_TYPE')
 
 # ファイルの入力先と出力先を変更する場合は以下の2つを変更
-INPUT_FILE_PATH = './files/input/'
-OUTPUT_FILE_PATH = './files/output/'
+if OS_TYPE == 'WIN':
+    INPUT_FILE_PATH = os.path.join('.', 'files', 'input')
+    OUTPUT_FILE_PATH = os.path.join('.', 'files', 'output')
+if OS_TYPE == 'MAC':
+    INPUT_FILE_PATH = './files/input/'
+    OUTPUT_FILE_PATH = './files/output/'
 
 # 現状はcsvのみのサポートだが、追加する場合は以下にリストで追記する
 SUPPORTED_EXTENTION = '*.csv'
