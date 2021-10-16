@@ -77,7 +77,7 @@ $ pip install -r requirements.txt
 
 ### エクセル
 ファイルを保存する際に拡張子 `CSV UTF-8(コンマ区切り)(.csv)` を選択する
-![alt text](./pic/execel_input.png)
+![alt text](./pic/execel_input.PNG)
 
 ## データを取り込む方法
 ### googleスプレッドシート
@@ -89,4 +89,4 @@ $ pip install -r requirements.txt
 注意: エクセルで取り込む場合は文字化けするので、以下の対応を行う
 1. 出力されたファイルをメモ帳で開く
 2. 何も変更せず名前をつけて保存ボタンを押し、エンコードを `UTF-8(BOM付き)` を指定する
-![alt text](./pic/save_with_bom.png)
+![alt text](./pic/save_with_bom.PNG)
