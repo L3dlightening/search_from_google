@@ -1,6 +1,5 @@
 import os
 import glob
-from numpy import result_type
 import pandas as pd
 
 from src.search import SearchFromGoogle
