@@ -1,0 +1,33 @@
+import os
+import glob
+import pandas as pd
+
+from src.search import SearchFromGoogle
+from src.util import make_output_file_path
+
+# ファイルの入力先と出力先を変更する場合は以下の2つを変更
+INPUT_FILE_PATH = './files/input/'
+OUTPUT_FILE_PATH = './files/output/'
+
+# 現状はcsvのみのサポートだが、追加する場合は以下にリストで追記する
+SUPPORTED_EXTENTION = '*.csv'
+
+# 入力するデータのカラム名を変更したい場合は以下を編集
+INPUT_SEARCH_WORD = 'name'
+# 出力するデータのカラム名を変更したい場合は以下を編集
+OUTPUT_TITLE = 'title' # タイトル
+OUTPUT_DETAIL = 'detail' # ディスクリプション
+OUTPUT_URL_LINK = 'link' # リンク
+
+
+if __name__ == '__main__':
+    files_path = glob.glob(os.path.join(INPUT_FILE_PATH, SUPPORTED_EXTENTION))
+
+    for file_path in files_path:
+        output_path = make_output_file_path(INPUT_FILE_PATH, OUTPUT_FILE_PATH, file_path)
+        df = pd.read_csv(file_path)
+        for idx, row in df.iterrows():
+            # ToDo ここに値をゲットするコードを追記
+            df.loc[idx, OUTPUT_TITLE], df.loc[idx, OUTPUT_DETAIL], df.loc[idx, OUTPUT_URL_LINK] = \
+                SearchFromGoogle(row[INPUT_SEARCH_WORD]).save_contents()
+            df.to_csv(output_path, index=False)
