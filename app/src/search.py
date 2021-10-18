@@ -1,20 +1,22 @@
-'''概要: google検索から検索結果を取得するためのモジュール'''
+'''概要: google検索から検索結果を取得するためのモジュール
+
+Todo
+  - [ ] SearchFromGoogleのクラス作成時にキーワードを__init__するのはイケてないのでリファクタリングしたい
+  - [ ] 取得できる件数を可変できるようにsave_contentsを変更する
+    - [ ] 関数の変更
+    - [ ] テストの実装
+'''
 
 import os
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-from dotenv import load_dotenv
-
-load_dotenv()
-CHROME_DRIVER_PATH = os.getenv('CHROME_DRIVER_PATH')
-
 
 class SearchFromGoogle:
     '''google検索に関すること全般について記述されたクラス'''
-    def __init__(self, keyword):
-        self.DRIVER = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH)
+    def __init__(self, driver_path, keyword):
+        self.DRIVER = webdriver.Chrome(executable_path=driver_path)
         self.keyword = keyword
 
 

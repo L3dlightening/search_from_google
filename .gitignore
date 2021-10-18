@@ -1,4 +1,7 @@
 *.csv
 .env
 __pycache__/
+.pytest_cache/
 *.exe
+chromedriver
+.DS_Store

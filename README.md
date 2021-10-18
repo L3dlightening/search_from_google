@@ -90,3 +90,9 @@ $ pip install -r requirements.txt
 1. 出力されたファイルをメモ帳で開く
 2. 何も変更せず名前をつけて保存ボタンを押し、エンコードを `UTF-8(BOM付き)` を指定する  
 ![alt text](./pic/save_with_bom.PNG)
+
+
+## テスト実行方法
+1. `pipenv install`
+2. `pipenv run test`
+
