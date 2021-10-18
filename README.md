@@ -65,3 +65,8 @@ $ pip install -r requirements.txt
 2. windowsの場合は `@cd`  macの場合は `pwd` コマンドを実行し、カレントディレクトリが `search_from_google` であることを確認する
 3. `python app/main.py` をコマンドで実行する
 4. `seaech_from_google` 内の `files/output` 内にプログラムを実行した結果が配置される
+
+
+## テスト実行方法
+1. `pipenv install`
+2. `pipenv run test`
