@@ -8,6 +8,7 @@ selenium = "*"
 pandas = "*"
 python-dotenv = "*"
 pytest = "*"
+atomicwrites = "*"
 
 [dev-packages]
 
