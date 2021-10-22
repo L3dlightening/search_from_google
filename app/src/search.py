@@ -1,14 +1,8 @@
-'''概要: google検索から検索結果を取得するためのモジュール
-
-Todo
-  - [ ] SearchFromGoogleのクラス作成時にキーワードを__init__するのはイケてないのでリファクタリングしたい
-  - [ ] 取得できる件数を可変できるようにsave_contentsを変更する
-    - [ ] 関数の変更
-    - [ ] テストの実装
-'''
+'''概要: google検索から検索結果を取得するためのモジュール'''
 
 import os
 import time
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -27,17 +21,22 @@ class SearchFromGoogle:
         self.DRIVER.get(url)
 
 
-    def save_contents(self, length):
+    def save_contents(self, length, INPUT_SEARCH_WORD ,OUTPUT_TITLE, OUTPUT_DETAIL, OUTPUT_URL_LINK):
         '''検索キーワードからタイトル、概要、リンクを取得する'''
         self.search_keyword()
-        title_list = list(range(length))
-        href_list = list(range(length))
-        detail_list = list(range(length))
+
+        output_df = pd.DataFrame({
+            INPUT_SEARCH_WORD: [],
+            OUTPUT_TITLE: [],
+            OUTPUT_DETAIL: [],
+            OUTPUT_URL_LINK: []
+        })
 
         for idx in range(length):
             h3_element = self.DRIVER.find_elements(by=By.XPATH, value='//a/h3')[idx]
-            title_list[idx] = h3_element.text
-            href_list[idx] = h3_element.find_element(by=By.XPATH, value='..').get_attribute('href')
-            detail_list[idx] = self.DRIVER.find_elements(by=By.CLASS_NAME, value="VwiC3b")[idx].text
+            output_df.loc[idx, INPUT_SEARCH_WORD] = self.keyword
+            output_df.loc[idx, OUTPUT_TITLE] = h3_element.text
+            output_df.loc[idx, OUTPUT_URL_LINK] = h3_element.find_element(by=By.XPATH, value='..').get_attribute('href')
+            output_df.loc[idx, OUTPUT_DETAIL] = self.DRIVER.find_elements(by=By.CLASS_NAME, value="VwiC3b")[idx].text
 
-        return title_list, detail_list, href_list
+        return output_df
