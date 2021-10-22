@@ -6,11 +6,13 @@ ToDo
   - [ ] main.pyのリファクタリング
     - [ ] for文の2重ループをやめる
     - [ ] pythonのforは重いのでfor文自体をやめたい
+    - [ ] GoogleDriverのパスをif文に組み込む
 '''
 
 import os
 import glob
 import pandas as pd
+import argparse
 from dotenv import load_dotenv
 
 from src.search import SearchFromGoogle
@@ -38,6 +40,11 @@ INPUT_SEARCH_WORD = 'name'
 OUTPUT_TITLE = 'title' # タイトル
 OUTPUT_DETAIL = 'detail' # ディスクリプション
 OUTPUT_URL_LINK = 'link' # リンク
+
+# 実行時に取得する件数を入力して設定する
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--length', type=int, default=1)
+args = parser.parse_args()
 
 
 if __name__ == '__main__':
