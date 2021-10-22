@@ -6,11 +6,13 @@ ToDo
   - [ ] main.pyのリファクタリング
     - [ ] for文の2重ループをやめる
     - [ ] pythonのforは重いのでfor文自体をやめたい
+    - [ ] GoogleDriverのパスをif文に組み込む
 '''
 
 import os
 import glob
 import pandas as pd
+import argparse
 from dotenv import load_dotenv
 
 from src.search import SearchFromGoogle
@@ -39,6 +41,11 @@ OUTPUT_TITLE = 'title' # タイトル
 OUTPUT_DETAIL = 'detail' # ディスクリプション
 OUTPUT_URL_LINK = 'link' # リンク
 
+# 実行時に取得する件数を入力して設定する
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--length', type=int, default=1)
+args = parser.parse_args()
+
 
 if __name__ == '__main__':
     files_path = glob.glob(os.path.join(INPUT_FILE_PATH, SUPPORTED_EXTENTION))
@@ -49,10 +56,10 @@ if __name__ == '__main__':
         df = pd.read_csv(file_path)
         for idx, row in df.iterrows():
             df.loc[idx, OUTPUT_TITLE], df.loc[idx, OUTPUT_DETAIL], df.loc[idx, OUTPUT_URL_LINK] = \
-                SearchFromGoogle(CHROME_DRIVER_PATH, row[INPUT_SEARCH_WORD]).save_contents()
+                SearchFromGoogle(CHROME_DRIVER_PATH, row[INPUT_SEARCH_WORD]).save_contents(args.length)
 
         # ToDo 高速化を行う場合は、for文を削除しapplyで動くようにする
         # df[[OUTPUT_TITLE, OUTPUT_DETAIL,OUTPUT_URL_LINK]] = \
         #     df.apply(SearchFromGoogle().save_contents(), result_type='expand')
 
-        df.to_csv(output_path, index=False)
+        df.to_csv(output_path, index=False) 

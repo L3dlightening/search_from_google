@@ -27,13 +27,17 @@ class SearchFromGoogle:
         self.DRIVER.get(url)
 
 
-    def save_contents(self):
+    def save_contents(self, length):
         '''検索キーワードからタイトル、概要、リンクを取得する'''
         self.search_keyword()
+        title_list = list(range(length))
+        href_list = list(range(length))
+        detail_list = list(range(length))
 
-        h3_element = self.DRIVER.find_element(by=By.XPATH, value='//a/h3')
-        title = h3_element.text
-        href = h3_element.find_element(by=By.XPATH, value='..').get_attribute('href')
-        detail = self.DRIVER.find_element(by=By.CLASS_NAME, value="VwiC3b").text
+        for idx in range(length):
+            h3_element = self.DRIVER.find_elements(by=By.XPATH, value='//a/h3')[idx]
+            title_list[idx] = h3_element.text
+            href_list[idx] = h3_element.find_element(by=By.XPATH, value='..').get_attribute('href')
+            detail_list[idx] = self.DRIVER.find_elements(by=By.CLASS_NAME, value="VwiC3b")[idx].text
 
-        return title, detail, href
+        return title_list, detail_list, href_list
