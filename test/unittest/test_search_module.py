@@ -15,9 +15,9 @@ def test_検索ワードにアイドルマスターが入った時に特定の�
     expected_title, expected_detail, expected_href = \
         SearchFromGoogle(CHROME_DRIVER_PATH, 'アイドルマスター').save_contents(1)
 
-    assert expected_title == IDOL_TITLE
-    assert expected_detail == IDOL_DETAIL
-    assert expected_href == IDOL_HREF
+    assert expected_title[0] == IDOL_TITLE
+    assert expected_detail[0] == IDOL_DETAIL
+    assert expected_href[0] == IDOL_HREF
 
 
 def test_検索ワードの取得件数を指定した時に件数分のリストが返ってくる():

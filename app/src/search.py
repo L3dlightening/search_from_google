@@ -21,44 +21,51 @@ class SearchFromGoogle:
         time.sleep(2)
         self.DRIVER.get(url)
 
-    def get_h3_element(self, element_idx):
+
+    def update_search_page(self, element_idx):
+        '''googleの検索ページを取得し、要素が見つからない場合は、ページの切り替えも行う'''
         try:
             h3_element = self.DRIVER.find_elements(by=By.XPATH, value='//a/h3')[element_idx]
         except IndexError:
-            h3_element = self.DRIVER.find_element_by_link_text('次へ')
-            h3_element.click()
+
             element_idx = 0
+            next_page = self.DRIVER.find_element_by_link_text('次へ')
+            next_page.click()
             h3_element = self.DRIVER.find_elements(by=By.XPATH, value='//a/h3')[element_idx]
 
         return h3_element, element_idx
 
-    def save_contents(self, length, INPUT_SEARCH_WORD ,OUTPUT_TITLE, OUTPUT_DETAIL, OUTPUT_URL_LINK):
+
+    def save_contents(self, length, COL_SEARCH_WORD ,COL_TITLE, COL_DETAIL, COL_URL_LINK):
         '''検索キーワードからタイトル、概要、リンクを取得する'''
         self.search_keyword()
-        print(self.keyword)
-
-        output_df = pd.DataFrame({
-            INPUT_SEARCH_WORD: [],
-            OUTPUT_TITLE: [],
-            OUTPUT_DETAIL: [],
-            OUTPUT_URL_LINK: []
+        
+        df_output = pd.DataFrame({
+            COL_SEARCH_WORD: [],
+            COL_TITLE: [],
+            COL_DETAIL: [],
+            COL_URL_LINK: []
         })
 
         for idx in range(length):
             if idx == 0:
                 element_idx = 0
+
             try:
-                h3_element, element_idx = self.get_h3_element(element_idx)
+                h3_element, element_idx = self.update_search_page(element_idx)
             except NoSuchElementException:
                 break 
-            output_df.loc[idx, INPUT_SEARCH_WORD] = self.keyword
-            output_df.loc[idx, OUTPUT_TITLE] = h3_element.text
-            output_df.loc[idx, OUTPUT_URL_LINK] = h3_element.find_element(by=By.XPATH, value='..').get_attribute('href')
+
+            df_output.loc[idx, COL_SEARCH_WORD] = self.keyword
+            df_output.loc[idx, COL_TITLE] = h3_element.text
+            df_output.loc[idx, COL_URL_LINK] = h3_element.find_element(by=By.XPATH, value='..').get_attribute('href')
+
             try:
-                output_df.loc[idx, OUTPUT_DETAIL] = self.DRIVER.find_elements(by=By.CLASS_NAME, value="VwiC3b")[element_idx].text
+                df_output.loc[idx, COL_DETAIL] = self.DRIVER.find_elements(by=By.CLASS_NAME, value="VwiC3b")[element_idx].text
             except IndexError:
-                output_df.loc[idx, OUTPUT_DETAIL] = '詳細不明'
+                df_output.loc[idx, COL_DETAIL] = 'エラーのため取得出来ませんでした。内容をご覧になりたい場合はURLから該当ページに飛んでください。'
+
             element_idx += 1
             
-        return output_df
+        return df_output
         

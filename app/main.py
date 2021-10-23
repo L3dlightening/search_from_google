@@ -49,12 +49,14 @@ if __name__ == '__main__':
 
     # 高速化のためfor文はやめたい　案: files_pathをdfに保存して各ファイルpathにapplyかな〜
     for file_path in files_path:
+
         df_output = pd.DataFrame({
             COL_SEARCH_WORD: [],
             COL_TITLE: [],
             COL_DETAIL: [],
             COL_URL_LINK: []
         })
+
         output_path = make_output_file_path(INPUT_FILE_PATH, OUTPUT_FILE_PATH, file_path)
         df_keyword = pd.read_csv(file_path)
         keywords = list(df_keyword[COL_SEARCH_WORD])
