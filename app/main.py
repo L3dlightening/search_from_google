@@ -37,6 +37,7 @@ COL_SEARCH_WORD = 'name'
 COL_TITLE = 'title' # タイトル
 COL_DETAIL = 'detail' # ディスクリプション
 COL_URL_LINK = 'link' # リンク
+COL_CACHE_LINK = 'cache' # キャッシュリンク
 
 # 実行時に取得する件数を入力して設定する
 parser = argparse.ArgumentParser()
@@ -62,7 +63,7 @@ if __name__ == '__main__':
         keywords = list(df_keyword[COL_SEARCH_WORD])
 
         for keyword in keywords:
-            df_single_keyword_search_results = SearchFromGoogle(CHROME_DRIVER_PATH, keyword).save_contents(args.length, COL_SEARCH_WORD ,COL_TITLE, COL_DETAIL, COL_URL_LINK)
+            df_single_keyword_search_results = SearchFromGoogle(CHROME_DRIVER_PATH, keyword).save_contents(args.length, COL_SEARCH_WORD ,COL_TITLE, COL_DETAIL, COL_URL_LINK, COL_CACHE_LINK)
             df_output = df_output.append(df_single_keyword_search_results)
 
         df_output.to_csv(output_path, index=False)

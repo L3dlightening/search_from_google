@@ -6,6 +6,7 @@ import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 
 
 class SearchFromGoogle:
@@ -36,10 +37,20 @@ class SearchFromGoogle:
         return h3_element, element_idx
 
 
-    def save_contents(self, length, COL_SEARCH_WORD ,COL_TITLE, COL_DETAIL, COL_URL_LINK):
+    def search_cache(self, url):
+        self.DRIVER.get("https://www.google.com/")
+        time.sleep(2)
+        _search = "cache:" + url
+        query = self.DRIVER.find_element(By.NAME, "q")
+        query.send_keys(_search)
+        query.send_keys(Keys.ENTER)
+        time.sleep(2)
+
+
+    def save_contents(self, length, COL_SEARCH_WORD ,COL_TITLE, COL_DETAIL, COL_URL_LINK, COL_CACHE_LINK):
         '''検索キーワードからタイトル、概要、リンクを取得する'''
         self.search_keyword()
-        
+
         df_output = pd.DataFrame({
             COL_SEARCH_WORD: [],
             COL_TITLE: [],
@@ -65,6 +76,8 @@ class SearchFromGoogle:
             except IndexError:
                 df_output.loc[idx, COL_DETAIL] = 'エラーのため取得出来ませんでした。内容をご覧になりたい場合はURLから該当ページに飛んでください。'
 
+            self.search_cache(df_output.loc[idx, COL_URL_LINK])
+            df_output.loc[idx, COL_CACHE_LINK] = self.DRIVER.current_url
             element_idx += 1
             
         return df_output
