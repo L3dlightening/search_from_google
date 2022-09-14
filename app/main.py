@@ -1,10 +1,4 @@
-'''search_from_googleのメインコード
-
-ToDo
-  - [ ] main.pyのリファクタリング
-    - [ ] for文の2重ループをやめる
-    - [ ] pythonのforは重いのでfor文自体をやめたい
-'''
+"""search_from_googleのメインコード"""
 
 import os
 import glob
@@ -34,9 +28,11 @@ SUPPORTED_EXTENTION = '*.csv'
 # 入力するデータのカラム名を変更したい場合は以下を編集
 COL_SEARCH_WORD = 'name'
 # 出力するデータのカラム名を変更したい場合は以下を編集
-COL_TITLE = 'title' # タイトル
-COL_DETAIL = 'detail' # ディスクリプション
-COL_URL_LINK = 'link' # リンク
+
+COL_TITLE = 'title'
+COL_DETAIL = 'detail'
+COL_URL_LINK = 'link'
+COL_CACHE_LINK = 'cache'
 
 # 実行時に取得する件数を入力して設定する
 parser = argparse.ArgumentParser()
@@ -47,7 +43,6 @@ args = parser.parse_args()
 if __name__ == '__main__':
     files_path = glob.glob(os.path.join(INPUT_FILE_PATH, SUPPORTED_EXTENTION))
 
-    # 高速化のためfor文はやめたい　案: files_pathをdfに保存して各ファイルpathにapplyかな〜
     for file_path in files_path:
 
         df_output = pd.DataFrame({
@@ -57,12 +52,26 @@ if __name__ == '__main__':
             COL_URL_LINK: []
         })
 
-        output_path = make_output_file_path(INPUT_FILE_PATH, OUTPUT_FILE_PATH, file_path)
+        output_path = make_output_file_path(
+                INPUT_FILE_PATH, OUTPUT_FILE_PATH, file_path)
         df_keyword = pd.read_csv(file_path)
         keywords = list(df_keyword[COL_SEARCH_WORD])
 
         for keyword in keywords:
-            df_single_keyword_search_results = SearchFromGoogle(CHROME_DRIVER_PATH, keyword).save_contents(args.length, COL_SEARCH_WORD ,COL_TITLE, COL_DETAIL, COL_URL_LINK)
-            df_output = df_output.append(df_single_keyword_search_results)
+            df_single_keyword_search_results = SearchFromGoogle(
+                    CHROME_DRIVER_PATH,
+                    keyword
+                ).save_contents(
+                    args.length,
+                    COL_SEARCH_WORD,
+                    COL_TITLE,
+                    COL_DETAIL,
+                    COL_URL_LINK,
+                    COL_CACHE_LINK)
+
+            df_output = pd.concat(
+                [df_output, df_single_keyword_search_results],
+                ignore_index=True
+            )
 
         df_output.to_csv(output_path, index=False)
