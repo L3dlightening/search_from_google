@@ -42,7 +42,7 @@ $ pwd
 
 3. pythonに必要なパッケージをインストール
 ```
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 #### windowsの場合
