@@ -18,7 +18,7 @@ class SearchFromGoogle:
     def search_keyword(self):
         """google検索を行うためのドライバーを設定する"""
         url = "https://www.google.com/search?q={}&safe=off".format(self.keyword)
-        time.sleep(1)
+        time.sleep(2)
         self.DRIVER.get(url)
 
     def update_search_page(self, element_idx):
@@ -30,7 +30,11 @@ class SearchFromGoogle:
         except IndexError:
 
             element_idx = 0
-            next_page = self.DRIVER.find_element_by_link_text('次へ')
+            # next_page = self.DRIVER.find_element_by_link_text('次へ')
+            next_page = self.DRIVER.find_element(
+                    by=By.LINK_TEXT,
+                    value='次へ'
+                    )
             next_page.click()
             h3_element = self.DRIVER.find_elements(
                     by=By.XPATH, value='//a/h3')[element_idx]
@@ -40,9 +44,11 @@ class SearchFromGoogle:
     def search_cache(self, url):
         """google検索画面に戻りcacheを検索するモジュール"""
         self.DRIVER.get("https://www.google.com/")
+        time.sleep(2)
         _search = "cache:" + url
         query = self.DRIVER.find_element(By.NAME, "q")
         query.send_keys(_search)
+        time.sleep(1)
         query.send_keys(Keys.ENTER)
         time.sleep(1)
 
@@ -79,11 +85,15 @@ class SearchFromGoogle:
                         'エラーのため取得出来ませんでした。\
                         内容をご覧になりたい場合はURLから\
                         該当ページに飛んでください。'
-
-            try:
-                self.search_cache(df_output.loc[idx, COL_URL_LINK])
-                df_output.loc[idx, COL_CACHE_LINK] = self.DRIVER.current_url
-            except:
-                df_output.loc[idx, COL_CACHE_LINK] = "キャッシュなし"
             element_idx += 1
+            time.sleep(1)
+        cache_list = df_output[df_output[COL_SEARCH_WORD]==self.keyword].index.tolist()
+        for cache in cache_list:
+            try:
+                item = df_output.loc[cache]
+                self.search_cache(item[COL_URL_LINK])
+                df_output.loc[cache, COL_CACHE_LINK] = self.DRIVER.current_url
+                time.sleep(2)
+            except:
+                df_output.loc[cache, COL_CACHE_LINK] = "キャッシュなし"
         return df_output
